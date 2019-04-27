@@ -84,7 +84,7 @@ router.get('/main', function (req, res, next) {
   if(req.session.token == "")res.redirect('/bindURI');
   else if (islogin == false) res.redirect('/');
   else {
-    res.render("/main");
+    res.render("main");
   }
 });
 
