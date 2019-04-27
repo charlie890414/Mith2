@@ -58,8 +58,9 @@ router.post('/login', function (req, res, next) {
 });
 
 router.post('/signup', function (req, res, next) {
-  var islogin = req.session.login;
-  if (islogin == true) res.redirect('main');
+  var islogin = req.session.login;  
+  if(req.session.token == "")res.redirect('/bindURI');
+  else if (islogin == true) res.redirect('main');
   else {
     new account({
       "account": req.body.account,
@@ -80,8 +81,9 @@ router.post('/signup', function (req, res, next) {
 });
 
 router.get('/main', function (req, res, next) {
-  var islogin = req.session.login;
-  if (islogin == false) res.redirect('/');
+  var islogin = req.session.login;  
+  if(req.session.token == "")res.redirect('/bindURI');
+  else if (islogin == false) res.redirect('/');
   else {
     res.render("main");
   }
@@ -89,7 +91,9 @@ router.get('/main', function (req, res, next) {
 
 router.get('/personal_video', function (req, res, next) {
   var islogin = req.session.login;
-  if (islogin == false) res.redirect('/');
+  
+  if(req.session.token == "")res.redirect('/bindURI');
+  else if (islogin == false) res.redirect('/');
   else {
     res.render("personal_video");
   }
@@ -98,7 +102,9 @@ router.get('/personal_video', function (req, res, next) {
 
 router.get('/personal_menu', function (req, res, next) {
   var islogin = req.session.login;
-  if (islogin == false) res.redirect('/');
+  
+  if(req.session.token == "")res.redirect('/bindURI');
+  else if (islogin == false) res.redirect('/');
   else {
     res.render("personal_menu");
   }
