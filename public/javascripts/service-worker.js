@@ -1,5 +1,8 @@
 const filesToCache = [
 	'/',
+	'images/brand.png',
+	'images/icon.png',
+	'images/icon2.png'
 ];
 const cacheName = 'static-v1';
 

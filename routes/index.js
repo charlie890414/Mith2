@@ -37,8 +37,8 @@ router.get('/', function (req, res, next) {
 
 router.post('/login', function (req, res, next) {
   var islogin = req.session.login;
-  var name = req.session.name;
-  if (islogin == true) res.redirect('main');
+  if(req.session.token == "")res.redirect('/bindURI');
+  else if (islogin == true) res.redirect('main');
   else {
     account.findOne({
       'account': req.body.account
@@ -50,6 +50,7 @@ router.post('/login', function (req, res, next) {
       } else {
         req.session.login = true;
         req.session.id = result.id;
+        req.session.token = result.token;
         res.redirect('main');
       }
     });
@@ -62,7 +63,8 @@ router.post('/signup', function (req, res, next) {
   else {
     new account({
       "account": req.body.account,
-      "password": bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8), null)
+      "password": bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8), null),
+      "token": ""
     }).save(function (err, result) {
       if (err) {
         console.log(err);
@@ -70,6 +72,7 @@ router.post('/signup', function (req, res, next) {
       } else {
         req.session.login = true;
         req.session.id = result.id;
+        req.session.token = result.token;
         res.redirect("main");
       }
     });
@@ -109,7 +112,7 @@ router.get('/getmovielist', function (request, response) {
 
 router.get('/bindURI', function (request, response) {
   const url = sdk.getBindURI();
-  response.status(200).redirect(url + "&user_id=" + request.query.user_id);
+  response.status(200).redirect(url + "&user_id=" + request.session.user_id);
 });
 
 router.get('/uploads/:id', function (request, response) {
@@ -138,7 +141,7 @@ router.get('/delbindURI', function (request, response) {
       account.update({
         '_id': request.query.user_id
       }, {
-        "token": null
+        "token": ""
       }).exec(function (err, result) {
         if (err) {
           response.status(400).send("Error");
@@ -223,19 +226,20 @@ router.get('/success', function (request, response) {
     }).exec(function (err) {
       if (err) {
         console.log(err);
-        response.status(400).send("Error");
+        response.status(400).redirect("/");
       } else {
-        response.status(200).send("Ok");
+        req.session.token = data.token;
+        response.status(200).redirect("/main");
       }
     });
   }).catch(err => {
     console.log(err);
-    response.status(400).send("Error");
+    response.status(400).redirect("/");
   });
 });
 
 router.get('/faillure', function (request, response) {
-  response.status(400).send("Error");
+  response.status(400).redirect("/");
 });
 
 module.exports = router;
