@@ -22,7 +22,7 @@
       margin-left: auto;
       margin-right: auto;
       display: block;
-      height: 100%;
+      width: 90%;
     }
 
     .jumbotron {
@@ -71,6 +71,7 @@
           div.classList.add('jumbotron-fluid');
           var video = document.createElement("video");
           video.setAttribute("controls", "")
+          video.setAttribute("preload", "none")
           var source = document.createElement("source");
           source.setAttribute("src", obj.movie);
           source.setAttribute("type", "video/mp4");
