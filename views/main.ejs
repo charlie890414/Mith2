@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en" class="bg-dark">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <title>main</title>
+  <style>
+    html {
+      width: 100%;
+    }
+
+    video,
+    div {
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+      height: 100%;
+    }
+
+    .jumbotron {
+      background-color: black;
+      height: 500px;
+      border: 0%;
+      padding: 0%;
+    }
+  </style>
+</head>
+
+<body class="bg-dark">
+
+  <nav class="navbar  navbar-dark bg-dark ">
+    <a class="navbar-brand" href="#">
+      <img src="/images/brand.png" width="150" height="30" alt="">
+    </a>
+    <a class="nav-link text-light navbar-right" href="/personal_video"><i class="fas fa-user"></i></a>
+    <a class="nav-link text-light navbar-right" href="/menu"><i class="fas fa-shopping-bag"></i></a>
+  </nav>
+  <div class="container" id="container"></div>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+  </script>
+  <script>
+    var container = document.getElementById("container");
+    $.ajax({
+      type: "get",
+      async: true,
+      dataType: "json",
+      url: "/getmovielist",
+      contentType: 'application/json; charset=UTF-8',
+      success: function (msg) {
+        console.log(msg);
+        msg.forEach(obj => {
+          console.log(obj.movie);
+          var div = document.createElement("div");
+          div.classList.add('jumbotron');
+          div.classList.add('jumbotron-fluid');
+          var video = document.createElement("video");
+          video.setAttribute("controls", "")
+          var source = document.createElement("source");
+          source.setAttribute("src", obj.movie);
+          source.setAttribute("type", "video/mp4");
+          video.appendChild(source);
+          div.appendChild(video);
+          container.appendChild(div);
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>

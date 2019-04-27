@@ -1,0 +1,21 @@
+#edit{
+	height: 33px;
+}
+
+#a1{
+	display: inline-block;
+	padding: 20%;
+	height: 120px;
+	width: 120px;
+}
+
+#money{
+	width: 15rem;
+}
+
+.fa-file-alt {
+	font-size: 2cm;
+}
+.fa-video {
+	font-size: 2cm;
+}
