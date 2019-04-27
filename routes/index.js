@@ -37,8 +37,7 @@ router.get('/', function (req, res, next) {
 
 router.post('/login', function (req, res, next) {
   var islogin = req.session.login;
-  if(req.session.token == "")res.redirect('/bindURI');
-  else if (islogin == true) res.redirect('main');
+  if (islogin == true) res.redirect('main');
   else {
     account.findOne({
       'account': req.body.account
@@ -51,7 +50,7 @@ router.post('/login', function (req, res, next) {
         req.session.login = true;
         req.session.id = result.id;
         req.session.token = result.token;
-        res.redirect('main');
+        res.redirect('/main');
       }
     });
   }
@@ -59,8 +58,7 @@ router.post('/login', function (req, res, next) {
 
 router.post('/signup', function (req, res, next) {
   var islogin = req.session.login;  
-  if(req.session.token == "")res.redirect('/bindURI');
-  else if (islogin == true) res.redirect('main');
+  if (islogin == true) res.redirect('/main');
   else {
     new account({
       "account": req.body.account,
@@ -74,7 +72,7 @@ router.post('/signup', function (req, res, next) {
         req.session.login = true;
         req.session.id = result.id;
         req.session.token = result.token;
-        res.redirect("main");
+        res.redirect("/main");
       }
     });
   }
@@ -82,10 +80,11 @@ router.post('/signup', function (req, res, next) {
 
 router.get('/main', function (req, res, next) {
   var islogin = req.session.login;  
+  console.log(req.session.token);
   if(req.session.token == "")res.redirect('/bindURI');
   else if (islogin == false) res.redirect('/');
   else {
-    res.render("main");
+    res.render("/main");
   }
 });
 
