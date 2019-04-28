@@ -218,7 +218,7 @@ router.get('/check', function (request, response) {
   account.findOne({
     '_id': request.query.user_id
   }).exec(function (err, result) {
-    if (result.token != null) {
+    if (result.token != "") {
       response.status(200).send("OK");
     } else {
       response.status(400).send("Error");
