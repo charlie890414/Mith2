@@ -236,7 +236,7 @@ router.get('/success', function (request, response) {
   }).then(data => {
     console.log(data);
     account.update({
-      "_id": request.session.id
+      "_id": request.query.user_id
     }, {
       "token": data.token
     }).exec(function (err) {
