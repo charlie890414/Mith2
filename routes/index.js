@@ -48,7 +48,7 @@ router.post('/login', function (req, res, next) {
         res.redirect('/');
       } else {
         req.session.login = true;
-        req.session.id = result._id;
+        req.session.userid = result._id;
         req.session.token = result.token;
         res.redirect('/main');
       }
@@ -70,7 +70,7 @@ router.post('/signup', function (req, res, next) {
         res.send("There was a problem adding the information to the database.");
       } else {
         req.session.login = true;
-        req.session.id = result._id;
+        req.session.userid = result._id;
         req.session.token = result.token;
         res.redirect("/main");
       }
@@ -117,7 +117,7 @@ router.get('/getmovielist', function (request, response) {
 
 router.get('/bindURI', function (request, response) {
   const url = sdk.getBindURI();
-  response.status(200).redirect(url + "&user_id=" + request.session.id);
+  response.status(200).redirect(url + "&user_id=" + request.session.userid);
 });
 
 router.get('/uploads/:id', function (request, response) {
@@ -236,7 +236,7 @@ router.get('/success', function (request, response) {
   }).then(data => {
     console.log(data);
     account.update({
-      "_id": request.session.id
+      "_id": request.session.userid
     }, {
       "token": data.token
     }).exec(function (err) {
