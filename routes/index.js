@@ -48,7 +48,7 @@ router.post('/login', function (req, res, next) {
         res.redirect('/');
       } else {
         req.session.login = true;
-        req.session.id = result.id;
+        req.session.id = result._id;
         req.session.token = result.token;
         res.redirect('/main');
       }
@@ -70,7 +70,7 @@ router.post('/signup', function (req, res, next) {
         res.send("There was a problem adding the information to the database.");
       } else {
         req.session.login = true;
-        req.session.id = result.id;
+        req.session.id = result._id;
         req.session.token = result.token;
         res.redirect("/main");
       }
