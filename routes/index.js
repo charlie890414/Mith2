@@ -57,7 +57,7 @@ router.post('/login', function (req, res, next) {
 });
 
 router.post('/signup', function (req, res, next) {
-  var islogin = req.session.login;  
+  var islogin = req.session.login;
   if (islogin == true) res.redirect('/main');
   else {
     new account({
@@ -79,9 +79,9 @@ router.post('/signup', function (req, res, next) {
 });
 
 router.get('/main', function (req, res, next) {
-  var islogin = req.session.login;  
+  var islogin = req.session.login;
   console.log(req.session.token);
-  if(req.session.token == "")res.redirect('/bindURI');
+  if (req.session.token == "") res.redirect('/bindURI');
   else if (islogin == false) res.redirect('/');
   else {
     res.render("main");
@@ -90,8 +90,8 @@ router.get('/main', function (req, res, next) {
 
 router.get('/personal_video', function (req, res, next) {
   var islogin = req.session.login;
-  
-  if(req.session.token == "")res.redirect('/bindURI');
+
+  if (req.session.token == "") res.redirect('/bindURI');
   else if (islogin == false) res.redirect('/');
   else {
     res.render("personal_video");
@@ -101,8 +101,8 @@ router.get('/personal_video', function (req, res, next) {
 
 router.get('/personal_menu', function (req, res, next) {
   var islogin = req.session.login;
-  
-  if(req.session.token == "")res.redirect('/bindURI');
+
+  if (req.session.token == "") res.redirect('/bindURI');
   else if (islogin == false) res.redirect('/');
   else {
     res.render("personal_menu");
@@ -117,7 +117,7 @@ router.get('/getmovielist', function (request, response) {
 
 router.get('/bindURI', function (request, response) {
   const url = sdk.getBindURI();
-  response.status(200).redirect(url + "&user_id=" + request.session.user_id);
+  response.status(200).redirect(url + "&user_id=" + request.session.id);
 });
 
 router.get('/uploads/:id', function (request, response) {
@@ -157,6 +157,17 @@ router.get('/delbindURI', function (request, response) {
     }).catch(error => {
       response.status(400).send("Error");
     });
+  });
+});
+
+router.get('/postmining', function (request, response) {
+  sdk.postUserMiningAction({
+    token: request.body.token,
+    uuid: _uuid(),
+    reward: request.body.reward,
+    happenedAt: request.body.happenedAt
+  }).then(data => {
+    response.send(data);
   });
 });
 
@@ -225,7 +236,7 @@ router.get('/success', function (request, response) {
   }).then(data => {
     console.log(data);
     account.update({
-      "_id": request.query.user_id
+      "_id": req.session.id
     }, {
       "token": data.token
     }).exec(function (err) {
